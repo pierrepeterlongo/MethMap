@@ -19,10 +19,10 @@ get a local copy of MethMap source code
 > git clone --recursive https://github.com/pierrepeterlongo/MethMap.git
 
 Run a simple test on your computer
-> cd MethMap
-> cd tests
-> ./test.sh
-> cd ..
+> cd MethMap;
+> cd tests;
+> ./test.sh;
+> cd ..;
 
 
 # User manual
