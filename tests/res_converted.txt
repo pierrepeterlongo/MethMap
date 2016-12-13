@@ -1,0 +1,23 @@
+indexation
+querying, with threshold=0
+
+
+		 ******** RESULTS ********
+
+
+AGAUUAGAGUGGCUGUGGUCUAGUGCUGUGUGGAAGACUAGUGAUUUUGUUGUUCUGAUGUACUACGACAACAAGUCACAGCCGGCCUCAUAGCGCAGACUCCCUUCGAC	>hsa-mir-7-3|4|110|ORIG
+                                                                                   GGTTTCATAGTGTAGA 	 >read2
+                                                                                   .....C..........
+                                                                                   GGTTTTATAGTGTAGT 	 >read3
+                                                                                   ............... 
+                                                                                   GGTTTTATAGTGTAGA 	 >read6
+                                                                                   ................
+                                                                                   GGCCUCAUAGCGCAGA 	 >read6_non_converted
+                                                                                   ..CC.C....Y.C...
+CGCGACUGCGGCGGCGGUGGUGGGGGGAGCCGCGGGGAUCGCCGAGGGCCGGUCGGCCGCCCCGGGUGCCGCGCGGUGCCGCCGGCGGCGGUGAGGCCCCGCGCGUGUGUCCCGGCUGCGGUCGGCCGCGCUCGAGGGGUCCCCGUGGCGUCCCCUUCCCCGCCGGCCGCCUUUCUCGCG	>hsa-mir-3648-1|hsa-mir-3648-2|36|180|ORIG
+                                                                              GGGTTGGTGGTGGTGA 	 >read4
+                                                                                ..............
+                                                                              GGGTCGGTGGTGGTGA 	 >read5
+                                                                                ..Y...........
+                                                                              CCGCCGGCGGCGGTGA 	 >read4_non_converted
+                                                                              CY.CY..Y..Y.....

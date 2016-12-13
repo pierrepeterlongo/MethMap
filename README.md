@@ -14,12 +14,15 @@ python 3
 
 ## Instructions
 
-    # get a local copy of MethylMapper source code
+    # get a local copy of MethMap source code
     git clone --recursive https://github.com/pierrepeterlongo/MethMap.git
     
     # Run a simple test on your computer
     cd MethMap
-    todo#User manual
+    
+
+
+# User manual
 
 
 Contact: Pierre Peterlongo: pierre.peterlongo@inria.fr
