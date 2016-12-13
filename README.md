@@ -12,18 +12,18 @@ MethMap is designed for mapping short sequences (ie reads) to a reference bank. 
 
 ## Requirements
 
-python 3
+> python 3
 
 ## Instructions
 
 # get a local copy of MethMap source code
-git clone --recursive https://github.com/pierrepeterlongo/MethMap.git
+> git clone --recursive https://github.com/pierrepeterlongo/MethMap.git
 
 # Run a simple test on your computer
-cd MethMap
-cd tests
-./test.sh
-cd ..
+> cd MethMap
+> cd tests
+> ./test.sh
+> cd ..
 
 
 # User manual
@@ -32,17 +32,17 @@ cd ..
 **usage**: MethMap.py [-h] [-k K] [-t T] [-span S] input_bank_file input_query_file converted
 
 - positional arguments:
-- input_bank_file   input fasta or fastq bank file
-- input_query_file  input fasta or fastq query file
-- converted         convert: chose "True" or "False". False: usual mapping.
-True: "T"s from queries match "C"s from the bank.
+    - input_bank_file   input fasta or fastq bank file
+    - input_query_file  input fasta or fastq query file
+    - converted         convert: chose "True" or "False". False: usual mapping.
+                        True: "T"s from queries match "C"s from the bank.
 - optional arguments:
-- -h, --help        show this help message and exit
-- -k K              kmer size [default: 12]
-- -t T              Maximal number authorized substitution [default: 0]
-- -span S           The portion of a read mapped on a reference may be lower
-than 100 percent. Span (in 0-100) provides this minimal
-percentage value [Default 90]
+    - -h, --help        show this help message and exit
+    - -k K              kmer size [default: 12]
+    - -t T              Maximal number authorized substitution [default: 0]
+    - -span S           The portion of a read mapped on a reference may be lower
+                        than 100 percent. Span (in 0-100) provides this minimal
+                        percentage value [Default 90]
 
 
 
