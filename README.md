@@ -9,17 +9,16 @@ MethMap
 MethMap is designed for mapping short sequences (ie reads) to a reference bank. If required, when mapping converted sequences, 'T's from queries match 'C's from the bank. Otherwise, this script is a classical seed-and-extend heuristic.
 
 # Getting the latest source code
-
-## Requirements
+**Requirements**
 
 > python 3
 
-## Instructions
+**Instructions**
 
-# get a local copy of MethMap source code
+get a local copy of MethMap source code
 > git clone --recursive https://github.com/pierrepeterlongo/MethMap.git
 
-# Run a simple test on your computer
+Run a simple test on your computer
 > cd MethMap
 > cd tests
 > ./test.sh
