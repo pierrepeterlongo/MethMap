@@ -290,13 +290,3 @@ def main():
     
 if __name__ == "__main__":
     main()    
-
-    
- 
-    # The input file of files
-if (len(sys.argv)<5 or len(sys.argv)>6):
-       print ("arguments = bankfile queryfile size_seeds convert(True/False) [similarity threshold=0]")
-       exit(1)
-
-
-
