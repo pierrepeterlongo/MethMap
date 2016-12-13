@@ -31,8 +31,8 @@ Run a simple test on your computer
 > MethMap.py [-h] [-k K] [-t T] [-span S] input_bank_file input_query_file converted
 
 - positional arguments:
-    - input_bank_file   input fasta or fastq bank file
-    - input_query_file  input fasta or fastq query file
+    - input_bank_file   input fasta or fastq bank file (each header and each sequence must be on **one** line)
+    - input_query_file  input fasta or fastq query file (each header and each sequence must be on **one** line)
     - converted         convert: chose "True" or "False". False: usual mapping.
                         True: "T"s from queries match "C"s from the bank.
 - optional arguments:
