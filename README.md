@@ -33,7 +33,7 @@ Run a simple test on your computer
 - positional arguments:
     - input_bank_file   input fasta or fastq bank file (each header and each sequence must be on **one** line)
     - input_query_file  input fasta or fastq query file (each header and each sequence must be on **one** line)
-    - converted         convert: chose "True" or "False". False: usual mapping.
+    - converted         chose "True" or "False". False: usual mapping.
                         True: "T"s from queries match "C"s from the bank.
 - optional arguments:
     - -h, --help        show this help message and exit

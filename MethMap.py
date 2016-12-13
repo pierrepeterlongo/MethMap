@@ -264,7 +264,7 @@ def main():
     parser.add_argument("input_query_file", type=str,
                         help="input fasta or fastq query file" )
     parser.add_argument("converted", type=str,
-                        help="convert: chose \"True\" or \"False\". False: usual mapping. True:  \"T\"s from queries match \"C\"s from the bank.")
+                        help="chose \"True\" or \"False\". False: usual mapping. True:  \"T\"s from queries match \"C\"s from the bank.")
     parser.add_argument("-k", type=int, dest='k',
                         help="kmer size [default: 12]", default=12 )
     parser.add_argument("-t", type=int, dest='t',
