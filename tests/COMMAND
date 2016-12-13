@@ -1,1 +1,0 @@
-python ../MethMap.py data_test/bank.fa data_test/query.fa 12 True > res_converted.txt
