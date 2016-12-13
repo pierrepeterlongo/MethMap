@@ -47,9 +47,9 @@ Run a simple test on your computer
 
 
 ####Warning
-> No reverse complement is considered. All input sequences are considered 5' 3'
+ No reverse complement is considered. All input sequences are considered 5' 3'
 
 ####Contacts
-> - Amandine Etcheverry:  amandine.etcheverry@univ-rennes1.fr
-> - Pierre Peterlongo: pierre.peterlongo@inria.fr
-> - Marc Aubry: marc.aubry@univ-rennes1.fr
+ - Amandine Etcheverry:  amandine.etcheverry@univ-rennes1.fr
+ - Marc Aubry: marc.aubry@univ-rennes1.fr
+ - Pierre Peterlongo: pierre.peterlongo@inria.fr
