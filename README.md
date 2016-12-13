@@ -28,7 +28,7 @@ Run a simple test on your computer
 # User manual
 
 ## MethMap usage:
-**usage**: MethMap.py [-h] [-k K] [-t T] [-span S] input_bank_file input_query_file converted
+> MethMap.py [-h] [-k K] [-t T] [-span S] input_bank_file input_query_file converted
 
 - positional arguments:
     - input_bank_file   input fasta or fastq bank file
@@ -49,5 +49,7 @@ Run a simple test on your computer
 ####Warning
 > No reverse complement is considered. All input sequences are considered 5' 3'
 
-####Contact
->Pierre Peterlongo: pierre.peterlongo@inria.fr
+####Contacts
+> - Amandine Etcheverry:  amandine.etcheverry@univ-rennes1.fr
+> - Pierre Peterlongo: pierre.peterlongo@inria.fr
+> - Marc Aubry: marc.aubry@univ-rennes1.fr
