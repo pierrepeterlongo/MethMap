@@ -1,5 +1,6 @@
 import sys
 import gzip
+import argparse
 
 correct_char=[False for i in range(ord('z'))]
 correct_char[ord('A')]=True
@@ -108,13 +109,12 @@ def symbolMatchNucleotides (Q,iq,B,ib,convert):
 
        return ' '
        
-minimal_range_query=90
        
 
 
 
 # compare two (same length) sequences Q and B. At least "minimal_range_query" of the query must match
-def compareQueryAndRef (Q,B,start_on_bank,convert,threshold=0):
+def compareQueryAndRef (Q,B,start_on_bank,convert,minimal_range_query,threshold=0):
        dist=0
        start=0
        minimal_span = minimal_range_query*len(Q)//100
@@ -169,7 +169,7 @@ def printAMatch(B,comquery,Q,start, convert):
        
 
 # Compare a full query sequence to the whole indexed bank. Returns the best alignement (id of the reference and position on the reference)
-def query(sequences,comments,kmers, query,k,convert,threshold=0):
+def query(sequences,comments,kmers, query,k,convert,minimal_range_query,threshold=0):
        # print (query)
        query = query.replace("U","T")
        if convert : adapted_query = convert_sequence(query) # Used only for finding seeds. 
@@ -194,7 +194,7 @@ def query(sequences,comments,kmers, query,k,convert,threshold=0):
                      if not bank_sequence_id in ref_tested: ref_tested[bank_sequence_id]=[]
                      ref_tested[bank_sequence_id].append(start_on_bank) # We mark this couple bank_sequence_id, start_on_bank as tested
                      bank_sequence = sequences[bank_sequence_id].replace("U","T")
-                     dist = compareQueryAndRef (query,bank_sequence, start_on_bank,convert,threshold) # the distances are made on the non converted sequences (only ACGT-based and non ACGU-based)
+                     dist = compareQueryAndRef (query,bank_sequence, start_on_bank,convert,minimal_range_query,threshold) # the distances are made on the non converted sequences (only ACGT-based and non ACGU-based)
                      # print ("dist = "+str(dist))
                      if dist>threshold: continue
 
@@ -214,7 +214,7 @@ def query(sequences,comments,kmers, query,k,convert,threshold=0):
               
        
               
-def compare_all_queries(queryfile,sequences,comments,kmers,k,convert,threshold=0):
+def compare_all_queries(queryfile,sequences,comments,kmers,k,convert,minimal_range_query,threshold=0):
        nb_queries=0
        matches={}
        
@@ -236,7 +236,7 @@ def compare_all_queries(queryfile,sequences,comments,kmers,k,convert,threshold=0
                      queries.readline() # quality
 
               if correct_sequence(sequence):
-                     couples_bank_sequence_id_bank_sequence_position=query(sequences,comments,kmers, sequence,k,convert,threshold)
+                     couples_bank_sequence_id_bank_sequence_position=query(sequences,comments,kmers, sequence,k,convert,minimal_range_query,threshold)
                      if len(couples_bank_sequence_id_bank_sequence_position)==0: continue
                      for (bank_sequence_id,bank_sequence_position) in couples_bank_sequence_id_bank_sequence_position:
                             if bank_sequence_id not in matches: matches[bank_sequence_id]=[]
@@ -257,20 +257,46 @@ def print_results(sequences,comments,matches, convert):
                      for (comquery,sequence,bank_sequence_position) in matches[bank_sequence_id]:
                             printAMatch(seqbank,comquery,sequence,bank_sequence_position, convert)
                       
+def main():
+    parser = argparse.ArgumentParser(description="Maps short sequences to a reference bank. If required,  \'T\'s from queries match \'C\'s from the bank.  ")
+    parser.add_argument("input_bank_file", type=str,
+                        help="input fasta or fastq bank file" )
+    parser.add_argument("input_query_file", type=str,
+                        help="input fasta or fastq query file" )
+    parser.add_argument("converted", type=str,
+                        help="convert: chose \"True\" or \"False\". False: usual mapping. True:  \"T\"s from queries match \"C\"s from the bank.")
+    parser.add_argument("-k", type=int, dest='k',
+                        help="kmer size [default: 12]", default=12 )
+    parser.add_argument("-t", type=int, dest='t',
+                        help="Maximal number authorized substitution [default: 0]", default=0 )
+    parser.add_argument("-span", type=int, dest='s',
+                        help="The portion of a read mapped on a reference may be lower than 100 percent. Span (in 0-100) provides this minimal percentage value [Default 90]", default=90)
+    
+    args = parser.parse_args()
+    k=args.k
+    t=args.t
+    s=args.s
+    if args.converted=="True" or args.converted=="true" or args.converted=="T" or args.converted=="t":
+        convert=True
+    else:
+        convert=False
+    
+    print("indexation")
+    sequences,comments,kmers=index_bank(args.input_bank_file, k, convert)
+    print("querying, with threshold="+str(t))
+    matches=compare_all_queries(args.input_query_file,sequences,comments,kmers,k,convert,s,t)
+    print ("\n\n\t\t ******** RESULTS ********\n\n")
+    print_results(sequences,comments,matches,convert)
+    
+if __name__ == "__main__":
+    main()    
 
+    
+ 
+    # The input file of files
 if (len(sys.argv)<5 or len(sys.argv)>6):
        print ("arguments = bankfile queryfile size_seeds convert(True/False) [similarity threshold=0]")
        exit(1)
 
-k=int(sys.argv[3])
-convert=False
-if sys.argv[4]=="True": convert=True
-t=0
-if (len(sys.argv)==6): t=int(sys.argv[5])
-print("indexation")
-sequences,comments,kmers=index_bank(sys.argv[1], k, convert)
-print("querying, with threshold="+str(t))
-matches=compare_all_queries(sys.argv[2],sequences,comments,kmers,k,convert,t)
-print ("\n\n\t\t ******** RESULTS ********\n\n")
-print_results(sequences,comments,matches,convert)
+
 
