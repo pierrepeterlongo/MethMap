@@ -6,7 +6,7 @@ MethMap
 [![Build Status](https://travis-ci.org/pierrepeterlongo/MethMap.svg?branch=master)](https://travis-ci.org/pierrepeterlongo/MethMap)
 # What is MethMap?
 
-MethMap is designed for mapping short sequences (ie reads) to a reference bank. If required, when mapping converted sequences, 'T's from queries match 'C's from the bank. Otherwise, this script is a classical seed-and-extend heuristic.
+MethMap is designed for mapping short sequences (ie reads) to a reference bank. If required, when mapping bisulfite-converted sequences, 'T's from queries match 'C's from the bank. Otherwise, this script is a classical seed-and-extend heuristic.
 
 # Getting the latest source code
 **Requirements**
