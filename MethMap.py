@@ -2,6 +2,7 @@ import sys
 import gzip
 import argparse
 
+# Boolean vector all set to false except for A,C,G,T,U characters
 correct_char=[False for i in range(ord('z'))]
 correct_char[ord('A')]=True
 correct_char[ord('C')]=True
@@ -9,16 +10,19 @@ correct_char[ord('G')]=True
 correct_char[ord('T')]=True
 correct_char[ord('U')]=True
 
+# Check if a sequence contains only A,C,G,T,U characters
 def correct_sequence(s):
        for l in s: 
               if not correct_char[ord(l)]: return False
        return True
     
+# From a sequence 's' return a new sequence changing C to T
 def convert_sequence(s):
        return s.replace("C","T")
 
 # Index all sequences and comments for the bank. For each kmer (read 5'-> 3') store a couple (id of the bank sequence, position in this sequence)
 # returns the three data structures (sequences, comments, kmer index)
+# If convert is true, the 'C' are transformed to 'T', and thus seeds are AGT based.
 def index_bank(bankfile, k, convert):
        bank=open(bankfile,"r")
        sequences=[]
@@ -40,20 +44,17 @@ def index_bank(bankfile, k, convert):
                      bank.readline() # second comment
                      bank.readline() # quality
               if not correct_sequence(sequence): continue
-              adapted_sequence = sequence.replace("U","T")
-              if convert : adapted_sequence = convert_sequence(adapted_sequence)
-             
-
-              
+              adapted_sequence = sequence.replace("U","T") # Put all sequences to the ACGT characters
+              if convert : adapted_sequence = convert_sequence(adapted_sequence) # In case of Bisulfite converted sequence, change the C to T. Thus the seeds are AGT based.
+              # store the comments
               comments.append(combank)
+              # store the original sequence
               sequences.append(sequence)
-              
+              # index the kmers from the ACGT or AGT transformed sequence
               for i in range (0,len(adapted_sequence)-k):
                   kmer=adapted_sequence[i:i+k]
                   if not kmer in kmers: kmers[kmer]=[]
                   kmers[kmer].append((id,i))
-
-                
               id+=1
 
        bank.close()
@@ -61,20 +62,18 @@ def index_bank(bankfile, k, convert):
        
 
 
-#U (query) versus U bank = not methylated
-#C (query) versus U bank (as all 'C' from bank were transformed into U) = methylated
-
-# l1: from query, l2: from bank
-# if l1=l2: return 0
-# if l1=U and l2=C: return 0:
-# else: return 1
+# Compute distance between two nucleotides
+# If convert is true, 'T' from the query match 'C' from bank
 def distanceNucleotides (q,b,convert):
-       # if q=='T': q='U'# bank = ACGU, query = ACGT
        if q==b: return 0
-       if convert and q=='T' and b=='C': return 0 # methylated position (once traitement "bisulfite de sodium")
+       if convert and q=='T' and b=='C': return 0 # 'T' from the query match 'C' from bank
        return 1
        
-# used to print a formated view of a match
+# prints a match symbol
+# If not converted, a match is '.' a mismatch is a space
+# If converted if query is in A,G,T, a match is '.' a mismatch is a space
+# If converted if query is C if followed by A,C,T, a match is 'C' a mismatch is a space
+# If converted if query is C if followed by G, a match is 'Y' a mismatch is a space
 def symbolMatchNucleotides (Q,iq,B,ib,convert):
 
        q=Q[iq]
@@ -85,7 +84,7 @@ def symbolMatchNucleotides (Q,iq,B,ib,convert):
            else: return ' '
            
            
-       if b=='C': b='U'# miRBase 21 convertie in silico (C --> T)
+       if b=='C': b='U'
        
        if iq==len(Q)-1 or ib==len(B)-1: 
               if q==b: return '.'
@@ -94,9 +93,7 @@ def symbolMatchNucleotides (Q,iq,B,ib,convert):
        
 
        q_po = Q[iq+1]
-       # b_po = B[ib+1]
        if q_po=='T': q_po='U'# bank = ACGU, query = ACGT
-       # if b_po=='C': b_po='U'# miRBase 21 convertie in silico (C --> T)
        
        if q=='C':
               if q_po=='G': return 'Y'
@@ -112,8 +109,9 @@ def symbolMatchNucleotides (Q,iq,B,ib,convert):
        
 
 
-
+# From original (over the ACGT alphabet) sequences, compute a hamming distance.
 # compare two (same length) sequences Q and B. At least "minimal_range_query" of the query must match
+# If the computed distance is higher than the threshold, return a value bigger than the threshold, but non representative of the complete computation
 def compareQueryAndRef (Q,B,start_on_bank,convert,minimal_range_query,threshold=0):
        dist=0
        start=0
@@ -145,6 +143,7 @@ def compareQueryAndRef (Q,B,start_on_bank,convert,minimal_range_query,threshold=
        if min(len(Q), len(B))-start<minimal_span: return dist+1
        return dist
        
+# Prints a match between a reference sequence B and a query sequence Q
 def printAMatch(B,comquery,Q,start, convert):
     #ADDED 12/12/2016
        if start<0: 
@@ -168,7 +167,8 @@ def printAMatch(B,comquery,Q,start, convert):
 
        
 
-# Compare a full query sequence to the whole indexed bank. Returns the best alignement (id of the reference and position on the reference)
+# Compare a full query sequence to the whole indexed bank. Returns the best alignement(s) (id(s) of the reference and position on the reference)
+# In case of equality, all best equal alignements are returned
 def query(sequences,comments,kmers, query,k,convert,minimal_range_query,threshold=0):
        # print (query)
        query = query.replace("U","T")
@@ -186,16 +186,13 @@ def query(sequences,comments,kmers, query,k,convert,minimal_range_query,threshol
                      #        <kmer>: (kmer_on_query= 4, kmer_on_bank=7 --> start_on_bank=3)
                      start_on_bank=kmer_on_bank-kmer_on_query
                      
-                     # if start_on_bank<0 : continue
-                     
-                     
+
                      if bank_sequence_id in ref_tested and start_on_bank in ref_tested[bank_sequence_id]: continue # Already tested
                      
                      if not bank_sequence_id in ref_tested: ref_tested[bank_sequence_id]=[]
                      ref_tested[bank_sequence_id].append(start_on_bank) # We mark this couple bank_sequence_id, start_on_bank as tested
                      bank_sequence = sequences[bank_sequence_id].replace("U","T")
                      dist = compareQueryAndRef (query,bank_sequence, start_on_bank,convert,minimal_range_query,threshold) # the distances are made on the non converted sequences (only ACGT-based and non ACGU-based)
-                     # print ("dist = "+str(dist))
                      if dist>threshold: continue
 
                      if (dist==best_result_value): 
@@ -204,16 +201,10 @@ def query(sequences,comments,kmers, query,k,convert,minimal_range_query,threshol
                             best_result_value=dist
                             best_result_ids=[]
                             best_result_ids.append((bank_sequence_id,start_on_bank))
-                            # print ("hey", start_on_bank)
- #                            for i in range(kmer_on_query): print(" ",end="")
- #                            print (kmer)
- #                            print (query)
- #                            print (bank_sequence[start_on_bank:start_on_bank+len(query)])
-                            # print (bank_sequence)
        return best_result_ids
               
        
-              
+# Perform the computation from all queries in the queryfile with all indexed sequences. 
 def compare_all_queries(queryfile,sequences,comments,kmers,k,convert,minimal_range_query,threshold=0):
        nb_queries=0
        matches={}
@@ -240,15 +231,12 @@ def compare_all_queries(queryfile,sequences,comments,kmers,k,convert,minimal_ran
                      if len(couples_bank_sequence_id_bank_sequence_position)==0: continue
                      for (bank_sequence_id,bank_sequence_position) in couples_bank_sequence_id_bank_sequence_position:
                             if bank_sequence_id not in matches: matches[bank_sequence_id]=[]
-                            matches[bank_sequence_id].append((comquery,sequence,bank_sequence_position))                     #
-                            # seqbank = sequences[bank_sequence_id]
-                            # combank = comments[bank_sequence_id]
-                            # print (seqbank+"\t"+combank+"\t",bank_sequence_position)
-                            # printAMatch(seqbank,comquery,sequence,bank_sequence_position)
+                            matches[bank_sequence_id].append((comquery,sequence,bank_sequence_position))                     
                      
        queries.close()
        return matches
-
+       
+# Print all results
 def print_results(sequences,comments,matches, convert):
        for bank_sequence_id in matches: 
                      seqbank = sequences[bank_sequence_id]

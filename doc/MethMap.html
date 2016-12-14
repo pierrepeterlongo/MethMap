@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module MethMap</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>MethMap</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/ppeterlo/workspace/MethMap/MethMap.py">/Users/ppeterlo/workspace/MethMap/MethMap.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="argparse.html">argparse</a><br>
+</td><td width="25%" valign=top><a href="gzip.html">gzip</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-compareQueryAndRef"><strong>compareQueryAndRef</strong></a>(Q, B, start_on_bank, convert, minimal_range_query, threshold=0)</dt><dd><tt>#&nbsp;From&nbsp;original&nbsp;(over&nbsp;the&nbsp;ACGT&nbsp;alphabet)&nbsp;sequences,&nbsp;compute&nbsp;a&nbsp;hamming&nbsp;distance.<br>
+#&nbsp;compare&nbsp;two&nbsp;(same&nbsp;length)&nbsp;sequences&nbsp;Q&nbsp;and&nbsp;B.&nbsp;At&nbsp;least&nbsp;"minimal_range_query"&nbsp;of&nbsp;the&nbsp;query&nbsp;must&nbsp;match<br>
+#&nbsp;If&nbsp;the&nbsp;computed&nbsp;distance&nbsp;is&nbsp;higher&nbsp;than&nbsp;the&nbsp;threshold,&nbsp;return&nbsp;a&nbsp;value&nbsp;bigger&nbsp;than&nbsp;the&nbsp;threshold,&nbsp;but&nbsp;non&nbsp;representative&nbsp;of&nbsp;the&nbsp;complete&nbsp;computation</tt></dd></dl>
+ <dl><dt><a name="-compare_all_queries"><strong>compare_all_queries</strong></a>(queryfile, sequences, comments, kmers, k, convert, minimal_range_query, threshold=0)</dt><dd><tt>#&nbsp;Perform&nbsp;the&nbsp;computation&nbsp;from&nbsp;all&nbsp;queries&nbsp;in&nbsp;the&nbsp;queryfile&nbsp;with&nbsp;all&nbsp;indexed&nbsp;sequences.</tt></dd></dl>
+ <dl><dt><a name="-convert_sequence"><strong>convert_sequence</strong></a>(s)</dt><dd><tt>#&nbsp;From&nbsp;a&nbsp;sequence&nbsp;'s'&nbsp;return&nbsp;a&nbsp;new&nbsp;sequence&nbsp;changing&nbsp;C&nbsp;to&nbsp;T</tt></dd></dl>
+ <dl><dt><a name="-correct_sequence"><strong>correct_sequence</strong></a>(s)</dt><dd><tt>#&nbsp;Check&nbsp;if&nbsp;a&nbsp;sequence&nbsp;contains&nbsp;only&nbsp;A,C,G,T,U&nbsp;characters</tt></dd></dl>
+ <dl><dt><a name="-distanceNucleotides"><strong>distanceNucleotides</strong></a>(q, b, convert)</dt><dd><tt>#&nbsp;Compute&nbsp;distance&nbsp;between&nbsp;two&nbsp;nucleotides<br>
+#&nbsp;If&nbsp;convert&nbsp;is&nbsp;true,&nbsp;'T'&nbsp;from&nbsp;the&nbsp;query&nbsp;match&nbsp;'C'&nbsp;from&nbsp;bank</tt></dd></dl>
+ <dl><dt><a name="-index_bank"><strong>index_bank</strong></a>(bankfile, k, convert)</dt><dd><tt>#&nbsp;Index&nbsp;all&nbsp;sequences&nbsp;and&nbsp;comments&nbsp;for&nbsp;the&nbsp;bank.&nbsp;For&nbsp;each&nbsp;kmer&nbsp;(read&nbsp;5'-&gt;&nbsp;3')&nbsp;store&nbsp;a&nbsp;couple&nbsp;(id&nbsp;of&nbsp;the&nbsp;bank&nbsp;sequence,&nbsp;position&nbsp;in&nbsp;this&nbsp;sequence)<br>
+#&nbsp;returns&nbsp;the&nbsp;three&nbsp;data&nbsp;structures&nbsp;(sequences,&nbsp;comments,&nbsp;kmer&nbsp;index)<br>
+#&nbsp;If&nbsp;convert&nbsp;is&nbsp;true,&nbsp;the&nbsp;'C'&nbsp;are&nbsp;transformed&nbsp;to&nbsp;'T',&nbsp;and&nbsp;thus&nbsp;seeds&nbsp;are&nbsp;AGT&nbsp;based.</tt></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>()</dt></dl>
+ <dl><dt><a name="-printAMatch"><strong>printAMatch</strong></a>(B, comquery, Q, start, convert)</dt><dd><tt>#&nbsp;Prints&nbsp;a&nbsp;match&nbsp;between&nbsp;a&nbsp;reference&nbsp;sequence&nbsp;B&nbsp;and&nbsp;a&nbsp;query&nbsp;sequence&nbsp;Q</tt></dd></dl>
+ <dl><dt><a name="-print_results"><strong>print_results</strong></a>(sequences, comments, matches, convert)</dt><dd><tt>#&nbsp;Print&nbsp;all&nbsp;results</tt></dd></dl>
+ <dl><dt><a name="-query"><strong>query</strong></a>(sequences, comments, kmers, query, k, convert, minimal_range_query, threshold=0)</dt><dd><tt>#&nbsp;Compare&nbsp;a&nbsp;full&nbsp;query&nbsp;sequence&nbsp;to&nbsp;the&nbsp;whole&nbsp;indexed&nbsp;bank.&nbsp;Returns&nbsp;the&nbsp;best&nbsp;alignement(s)&nbsp;(id(s)&nbsp;of&nbsp;the&nbsp;reference&nbsp;and&nbsp;position&nbsp;on&nbsp;the&nbsp;reference)<br>
+#&nbsp;In&nbsp;case&nbsp;of&nbsp;equality,&nbsp;all&nbsp;best&nbsp;equal&nbsp;alignements&nbsp;are&nbsp;returned</tt></dd></dl>
+ <dl><dt><a name="-symbolMatchNucleotides"><strong>symbolMatchNucleotides</strong></a>(Q, iq, B, ib, convert)</dt><dd><tt>#&nbsp;prints&nbsp;a&nbsp;match&nbsp;symbol<br>
+#&nbsp;If&nbsp;not&nbsp;converted,&nbsp;a&nbsp;match&nbsp;is&nbsp;'.'&nbsp;a&nbsp;mismatch&nbsp;is&nbsp;a&nbsp;space<br>
+#&nbsp;If&nbsp;converted&nbsp;if&nbsp;query&nbsp;is&nbsp;in&nbsp;A,G,T,&nbsp;a&nbsp;match&nbsp;is&nbsp;'.'&nbsp;a&nbsp;mismatch&nbsp;is&nbsp;a&nbsp;space<br>
+#&nbsp;If&nbsp;converted&nbsp;if&nbsp;query&nbsp;is&nbsp;C&nbsp;if&nbsp;followed&nbsp;by&nbsp;A,C,T,&nbsp;a&nbsp;match&nbsp;is&nbsp;'C'&nbsp;a&nbsp;mismatch&nbsp;is&nbsp;a&nbsp;space<br>
+#&nbsp;If&nbsp;converted&nbsp;if&nbsp;query&nbsp;is&nbsp;C&nbsp;if&nbsp;followed&nbsp;by&nbsp;G,&nbsp;a&nbsp;match&nbsp;is&nbsp;'Y'&nbsp;a&nbsp;mismatch&nbsp;is&nbsp;a&nbsp;space</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>correct_char</strong> = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, ...]</td></tr></table>
+</body></html>
