@@ -170,7 +170,6 @@ def printAMatch(B,comquery,Q,start, convert):
 # Compare a full query sequence to the whole indexed bank. Returns the best alignement(s) (id(s) of the reference and position on the reference)
 # In case of equality, all best equal alignements are returned
 def query(sequences,comments,kmers, query,k,convert,minimal_range_query,threshold=0):
-       # print (query)
        query = query.replace("U","T")
        if convert : adapted_query = convert_sequence(query) # Used only for finding seeds. 
        else: adapted_query = query
@@ -205,7 +204,7 @@ def query(sequences,comments,kmers, query,k,convert,minimal_range_query,threshol
               
        
 # Perform the computation from all queries in the queryfile with all indexed sequences. 
-def compare_all_queries(queryfile,sequences,comments,kmers,k,convert,minimal_range_query,threshold=0):
+def compare_all_queries(queryfile,sequences,comments,kmers,k,convert,minimal_range_query,verbose,threshold=0):
        nb_queries=0
        matches={}
        
@@ -214,7 +213,8 @@ def compare_all_queries(queryfile,sequences,comments,kmers,k,convert,minimal_ran
        sequence=""
        while True:
               nb_queries+=1
-              if(nb_queries%10000==0): print (nb_queries, "queries treated")
+              if verbose:
+                  if(nb_queries%10000==0): print (nb_queries, "queries treated")
               line = str(queries.readline()).lstrip('b\'').rstrip()
               if not line: break
               if line[0]=='>': # fasta
@@ -259,6 +259,8 @@ def main():
                         help="Maximal number authorized substitution [default: 0]", default=0 )
     parser.add_argument("-span", type=int, dest='s',
                         help="The portion of a read mapped on a reference may be lower than 100 percent. Span (in 0-100) provides this minimal percentage value [Default 90]", default=90)
+    parser.add_argument("-v", "--verbose", help="increase output verbosity",
+                        action="store_true")
     
     args = parser.parse_args()
     k=args.k
@@ -269,11 +271,11 @@ def main():
     else:
         convert=False
     
-    print("indexation")
+    if args.verbose: print("indexation")
     sequences,comments,kmers=index_bank(args.input_bank_file, k, convert)
-    print("querying, with threshold="+str(t))
-    matches=compare_all_queries(args.input_query_file,sequences,comments,kmers,k,convert,s,t)
-    print ("\n\n\t\t ******** RESULTS ********\n\n")
+    if args.verbose: print("querying, with threshold="+str(t))
+    matches=compare_all_queries(args.input_query_file,sequences,comments,kmers,k,convert,s,args.verbose,t)
+    if args.verbose: print ("\n\n\t\t ******** RESULTS ********\n\n")
     print_results(sequences,comments,matches,convert)
     
 if __name__ == "__main__":

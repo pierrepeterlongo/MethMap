@@ -1,5 +1,5 @@
 #!/bin/bash
-python ../MethMap.py data_test/bank.fa data_test/query.fa False -k 12 > current_non_converted.afac
+python ../MethMap.py data_test/bank.fa data_test/query.fa False -k 12 -v > current_non_converted.afac
 if [ $? -ne 0 ] ; then
 echo "*** Test: FAILURE on command python ../MethMap.py data_test/bank.fa data_test/query.fa 12 False"
 rm -f *afac*
@@ -14,7 +14,7 @@ exit 1
 fi
 
 
-python ../MethMap.py data_test/bank.fa data_test/query.fa True -k 12 > current_converted.afac
+python ../MethMap.py data_test/bank.fa data_test/query.fa True -k 12 -v > current_converted.afac
 if [ $? -ne 0 ] ; then
 echo "*** Test: FAILURE on command python ../MethMap.py data_test/bank.fa data_test/query.fa 12 True"
 rm -f *afac*
